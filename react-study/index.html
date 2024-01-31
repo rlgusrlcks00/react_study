@@ -1,53 +1,81 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <div id="root"></div>
-    </body>
-    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-    <script src = "https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="text/babel">
-        const root = document.querySelector("#root");
-        // const Title = () => (
-        //     <h3 id = "title" onMouseEnter = {() => console.log("goood!")}>
-        //         HiHi
-        //     </h3>
-        // );
-        // const Button = () => (<button style={{backgroundColor:"red"}}
-        // onClick={() => console.log("im clicked")}
-        // >
-        // Click me
-        // </button>);
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function MinutesToHours() {
+      const [minutes, setMinutes] = React.useState();
+      const [flipped, setFlipped] = React.useState(true);
+      const onChange = (event) => {
+        setMinutes(event.target.value);
+      };
+      // const onChange2 = (event) => {
+      //   setMinutes(event.target.value * 60);
+      // };
+      const onRest = () => {
+        setMinutes("");
+      }
+      const onFlip = () => 
+      {
+        setFlipped((current) => !current);
+        onRest();
+      }
 
-        // let count = 0;
-        // const countUp = () => {
-        //     count = count + 1;
-        //     reRender();
-        // }
-        // const reRender = () => {
-        //     ReactDOM.render(<Container />, root);
-        // }
+      return (
+        <div>
+          <div>
+            <label for = "minutes">Minutes : </label>
+            <input value = {!flipped ? minutes * 60 : minutes} 
+              id = "minutes" 
+              placeholder="0" 
+              type="number" 
+              onChange = {onChange}
+              disabled = {!flipped} />
+          </div>
 
-        function App() {
-            const [counter, setcounter]= React.useState(0);
-            const onClick = () => {
-                // setcounter(counter + 1);
-                setcounter((current) => current + 1);
-            };
-            return (
-                <div>
-                    <h3>Total click : {counter}</h3>
-                    <button onClick = {onClick}>Click Me!</button>
-                </div>
-            );
-        }
-        // const App = ()  => (
+          <div>
+            <label for = "hours">Hours : </label>
+            <input value = {!flipped ? minutes : Math.round(minutes / 60)} 
+              id = "hours" 
+              placeholder="0" 
+              type="number"
+              onChange = {onChange}
+              disabled = {flipped} />
+          </div>
+          <button onClick ={onRest}>Reset</button>
+          <button onClick ={onFlip}>{!flipped ? "Min To Hour" : "Hour To Min"}</button>
 
-        //     <div>
-        //         <h3>Total click {count}</h3>
-        //         <button onClick = {countUp}>Click Me!</button>
-        //     </div>
-        // );
-        ReactDOM.render(<App />, root);
-    </script>
+        </div>
+      );
+    }
+
+    function KmToMiles() {
+      return <h3>KM 2 MM</h3>;
+    }
+    function App() {
+
+      const [index, setIndex] = React.useState("0");
+      const onSelect = (event) => {
+        setIndex(event.target.value);
+      };
+
+      return (
+        <div>
+          <h1>Super Converter</h1>
+          <select value = {index} onChange = {onSelect} >
+            <option value = "0">Minutes & Hours</option>
+            <option value = "1">Km & Miles</option>
+          </select>
+          {index === "0" ? <MinutesToHours /> : null}
+          {index === "1" ? <KmToMiles /> : null}
+        </div>
+      );
+    }
+    const root = document.querySelector("#root");
+    ReactDOM.render(<App />, root);
+  </script>
 </html>
